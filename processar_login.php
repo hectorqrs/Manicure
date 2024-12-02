@@ -1,11 +1,17 @@
 <?php
 session_start();
 
+// Configurações de conexão para ambiente Vercel
+$host = getenv('DB_HOST');
+$usuario_db = getenv('DB_USER');
+$senha_db = getenv('DB_PASSWORD');
+$nome_db = getenv('DB_NAME');
+
 // Configurações de conexão com o banco de dados
-$host = 'localhost';
-$usuario_db = 'root';
-$senha_db = '';
-$nome_db = 'manicure_db';
+// $host = 'localhost';
+// $usuario_db = 'root';
+// $senha_db = '';
+// $nome_db = 'manicure_db';
 
 // Função para conectar ao banco de dados
 function conectarBancoDados() {
