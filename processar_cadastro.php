@@ -1,9 +1,9 @@
 <?php
 // Configurações de conexão para ambiente Vercel
-$host = getenv('DB_HOST');
-$usuario_db = getenv('DB_USER');
-$senha_db = getenv('DB_PASSWORD');
-$nome_db = getenv('DB_NAME');
+// $host = getenv('DB_HOST');
+// $usuario_db = getenv('DB_USER');
+// $senha_db = getenv('DB_PASSWORD');
+// $nome_db = getenv('DB_NAME');
 
 
 // Configurações de conexão com o banco de dados
@@ -17,7 +17,7 @@ function conectarBancoDados() {
     global $host, $usuario_db, $senha_db, $nome_db;
     
     try {
-        $conexao = new PDO("mysql:host=$host;dbname=$nome_db;charset=utf8", $usuario_db, $senha_db);
+        $conexao = new PDO('sqlite:' . __DIR__ . '/pages/manicure_db.sqlite');
         $conexao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $conexao;
     } catch(PDOException $e) {
