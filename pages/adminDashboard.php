@@ -30,7 +30,7 @@ function conectarBancoDados() {
 function buscarAgendamentos() {
     $conexao = conectarBancoDados();
     $stmt = $conexao->prepare("SELECT a.id, u.nome AS usuario, s.nome AS servico, 
-                                    a.data_agendamento, a.status 
+                                    a.data_agendamento, a.status, a.observacoes, u.id as usuario_id 
                                 FROM agendamentos a
                                 JOIN usuarios u ON a.usuario_id = u.id
                                 JOIN servicos s ON a.servico_id = s.id
@@ -122,6 +122,7 @@ $agendamentos = buscarAgendamentos();
                                 <th>Usuário</th>
                                 <th>Serviço</th>
                                 <th>Data</th>
+                                <th>Observações</th>
                                 <th>Status</th>
                                 <th>Ações</th>
                             </tr>
@@ -130,9 +131,10 @@ $agendamentos = buscarAgendamentos();
                             <?php foreach ($agendamentos as $agendamento): ?>
                             <tr>
                                 <td><?= $agendamento['id'] ?></td>
-                                <td><a href="usuario.php?usuario_id=<?php echo $agendamento['id'] ?>"><?= $agendamento['usuario'] ?></a></td>
+                                <td><a href="usuario.php?usuario_id=<?php echo $agendamento['usuario_id'] ?>"><?= $agendamento['usuario'] ?></a></td>
                                 <td><?= htmlspecialchars($agendamento['servico']) ?></td>
                                 <td><?= date('d/m/Y H:i', strtotime($agendamento['data_agendamento'])) ?></td>
+                                <td> <?php echo $agendamento['observacoes'] ?? "Nenhuma observação." ?> </td>
                                 <td><?= $agendamento['status'] ?></td>
                                 <td>
                                     <select onchange="atualizarStatus(<?= $agendamento['id'] ?>, this.value)">

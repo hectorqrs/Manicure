@@ -68,6 +68,11 @@ form button{
     margin-top: 10px;
 }
 
+form textarea{
+    resize: none;
+    font-size: 18px;
+}
+
 .logo {
     /* height: 190px; */
     /* width: 250px; */

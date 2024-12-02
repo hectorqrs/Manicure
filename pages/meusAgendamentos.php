@@ -30,7 +30,7 @@ function conectarBancoDados() {
 function buscarAgendamentos($usuario_id) {
     $conexao = conectarBancoDados();
     
-    $stmt = $conexao->prepare("SELECT a.id, s.nome as servico, s.preco, a.data_agendamento, a.status 
+    $stmt = $conexao->prepare("SELECT a.id, s.nome as servico, s.preco, a.data_agendamento, a.status, a.observacoes
                                 FROM agendamentos a
                                 JOIN servicos s ON a.servico_id = s.id
                                 WHERE a.usuario_id = :usuario_id
@@ -120,6 +120,7 @@ $agendamentos = buscarAgendamentos($_SESSION['usuario_id']);
                         <th>Serviço</th>
                         <th>Preço</th>
                         <th>Data</th>
+                        <th>Observações</th>
                         <th>Status</th>
                         <th>Ações</th>
                     </tr>
@@ -135,6 +136,7 @@ $agendamentos = buscarAgendamentos($_SESSION['usuario_id']);
                                 echo $data->format('d/m/Y H:i');
                                 ?>
                             </td>
+                            <td> <?php echo $agendamento['observacoes'] ?? "Nenhuma observação." ?> </td>
                             <td class="status-<?php echo strtolower($agendamento['status']); ?>">
                                 <?php echo $agendamento['status']; ?>
                             </td>

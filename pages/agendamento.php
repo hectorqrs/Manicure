@@ -66,6 +66,9 @@ if (!isset($_SESSION['usuario_id'])) {
                     </select>
                 </div>
 
+                <label for="observacoes">Observações:</label><br>
+                <textarea name="observacoes" id="observacoes" placeholder="Deixe um comentário..." rows="4" cols="50"></textarea>
+
                 <button type="submit">Agendar</button>
             </form>
 
@@ -150,21 +153,26 @@ if (!isset($_SESSION['usuario_id'])) {
                     return;
                 }
 
-                console.log("Data Enviada: " + data);
-                console.log("Horário Enviado: " + hora);
+                // console.log("Data Enviada: " + data);
+                // console.log("Horário Enviado: " + hora);
 
                 // Combinar data e hora
                 // Formatar a data manualmente sem conversão para ISO
                 const dataAgendamento = `${data} ${hora}:00`;
 
-                console.log("Data Agendada: " + dataAgendamento);
+                // console.log("Data Agendada: " + dataAgendamento);
 
                 const formData = new FormData();
                 formData.append('acao', 'criar_agendamento');
                 formData.append('usuario_id', <?php echo $_SESSION["usuario_id"] ?>);
                 formData.append('servico_id', document.getElementById('servico').value);
                 formData.append('data_agendamento', dataAgendamento);
+                if(document.querySelector("#observacoes").value != ""){
+                    formData.append('observacoes', document.querySelector("#observacoes").value);
+                }
 
+                console.log(formData);
+                
                 fetch('../backend.php', {
                     method: 'POST',
                     body: formData

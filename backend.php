@@ -27,7 +27,7 @@ function listarServicos() {
 }
 
 // Criar um novo agendamento
-function criarAgendamento($usuario_id, $servico_id, $data_agendamento){
+function criarAgendamento($usuario_id, $servico_id, $data_agendamento, $observacoes){
     $conexao = conectarBancoDados();
 
      // Converter string para DateTime
@@ -63,21 +63,21 @@ function criarAgendamento($usuario_id, $servico_id, $data_agendamento){
         return ['erro' => 'Horário já está ocupado'];
     }
 
-
-    // Inserir novo agendamento
-    $stmt = $conexao->prepare("INSERT INTO agendamentos
-                                (usuario_id, servico_id, data_agendamento)
-                                VALUES (:usuario_id, :servico_id, :data)");
-
-    $stmt->bindParam(':usuario_id', $usuario_id);
-    $stmt->bindParam(':servico_id', $servico_id);
-    $stmt->bindParam(':data', $data_agendamento);
+    $stmt2 = $conexao->prepare("INSERT INTO agendamentos
+                            (usuario_id, servico_id, data_agendamento, observacoes)
+                            VALUES (:usuario_id, :servico_id, :data, :observacoes)");
+    
+    $stmt2->bindParam(':usuario_id', $usuario_id);
+    $stmt2->bindParam(':servico_id', $servico_id);
+    $stmt2->bindParam(':data', $data_agendamento);
+    $stmt2->bindParam(':observacoes', $observacoes);
 
     try {
-        $stmt->execute();
+        $stmt2->execute();
         return ['sucesso' => 'Agendamento criado com sucesso'];
     } catch (PDOException $e) {
-        return ['erro' => 'Erro ao criar agendamento: '. $e->getMessage().'usuario_id: '.$usuario_id.' servico_id: '.$servico_id.' data_agendamento: '.$data_agendamento];
+        // return ['erro' => 'Erro ao criar agendamento.'];
+        return ['erro' => 'Erro ao criar agendamento: '. $e->getMessage().'usuario_id: '.$usuario_id.' servico_id: '.$servico_id.' data_agendamento: '.$data_agendamento.' observacoes: '.$observacoes];
     }
 }
 
@@ -93,8 +93,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $usuario_id =  $_POST["usuario_id"];
         $servico_id =  $_POST["servico_id"];
         $data_agendamento =  $_POST["data_agendamento"];
+        $observacoes =  (empty($_POST["observacoes"])) ? NULL : $_POST["observacoes"];
 
-        echo json_encode(criarAgendamento($usuario_id, $servico_id, $data_agendamento));
+        echo json_encode(criarAgendamento($usuario_id, $servico_id, $data_agendamento, $observacoes));
     }
 }
 ?>
