@@ -130,7 +130,7 @@ $agendamentos = buscarAgendamentos();
                             <?php foreach ($agendamentos as $agendamento): ?>
                             <tr>
                                 <td><?= $agendamento['id'] ?></td>
-                                <td><?= $agendamento['usuario'] ?></td>
+                                <td><a href="usuario.php?usuario_id=<?php echo $agendamento['id'] ?>"><?= $agendamento['usuario'] ?></a></td>
                                 <td><?= htmlspecialchars($agendamento['servico']) ?></td>
                                 <td><?= date('d/m/Y H:i', strtotime($agendamento['data_agendamento'])) ?></td>
                                 <td><?= $agendamento['status'] ?></td>
